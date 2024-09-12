@@ -37,18 +37,23 @@ for word in words:
     if len(word) < 3:
         # place the word in the pig_latin list
         ### your code here ###
+        pig_latin.append(word)
         continue
 
     # starts with vowel, modify accordingly and put in list
     elif starts_with_vowel(word) == True:
         # modify the word and place in pig_latin list
         ### your code here ###
+        v_start = word+'vay'
+        pig_latin.append(v_start)
         continue
 
     # starts with consonant, modify accordingly  and put in list
     else:
         # modify word and place in pig_latin list
         ### your code here ###
+        c_start = word[1:] + word[0] + 'ay'
+        pig_latin.append(c_start)
         continue
 
 # a new sentence in which you will re-assemble each of the modified words

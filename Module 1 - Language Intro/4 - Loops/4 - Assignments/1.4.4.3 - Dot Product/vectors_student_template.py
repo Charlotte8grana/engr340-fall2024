@@ -29,6 +29,15 @@ dot_product = 0
 
 ### Your code here
 
+#want to multiply elements with the same placement with one another then add their products
+#multiplying each element in vector_a to each element in vector_b
+for iterations in range(0,fixed_length):
+    mult = vector_a[iterations] * vector_b[iterations]
+    dot_product = mult + dot_product
+
+##STOPPED HERE##
+
+
 """
 Step 3: Calculate the error of your dot_product compared with numpy's solution
 """

@@ -29,3 +29,10 @@ num_evens = 0
 num_odds = 0
 
 ### YOUR CODE BEGINS HERE ###
+
+for squid in nums: #squid is the temporary storage of the values
+    if squid%2==0:
+        num_evens +=1
+
+    else:
+        num_odds +=1
