@@ -1,4 +1,4 @@
-def compound_return(initial_investment, interest_rate, years):
+def compound_return(initial_investment, interest_rate, years, random=10):
     """
     Calculate the total return on an investment that compounds annually
     :param initial_investment: Initial principal investment
@@ -21,7 +21,7 @@ print("Interest rate is " + str(rate / 100))
 print("Hold for " + str(n) + " years")
 
 # calculate the eventual result
-final = compound_return(principal, rate, n)
+final = compound_return(initial_investment=principal, interest_rate=rate, years=n)
 
 # fancy print the output with two decimal places for floating number
 print(f"Final value after is ${final:.2f}")
