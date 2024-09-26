@@ -62,15 +62,23 @@ def calculate_stress(force, sample_diameter):
 
     # calculate the cross-section area (mm^2)
     ### your code here ###
+    #Cross sectional area in mm^2
+    cross_sectional_area_mm = math.pi * sample_diameter**2
+    #Cross-sectional area in m^2
+    cross_sectional_area_m = cross_sectional_area_mm * (10**6)
 
     # calculate stress (MPa) from load (kN) and cross-sectional area
     ### your code here ###
+    #Stress in Pa=N/m^2
+    calculated_stress_Pa = (force * 1000) / cross_sectional_area_m
+    #Stress in MPa
+    calculated_stress_MPa = calculated_stress_Pa / 1000000
 
     # delete this line and replace it with your own
-    stress = None
+    stress = calculated_stress_MPa
 
     return stress
-
+#HEY DUMMY, YOU STOPPED RIGHT HEREEEEEEEEEEEEE
 
 
 if __name__ == "__main__":

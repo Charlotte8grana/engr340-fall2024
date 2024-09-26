@@ -33,10 +33,11 @@ def main(full_path_to_file):
     # Step 1: Establish a baseline by examining the force data the after for first ~20 points
 
     # set an amount of time to average and find the baseline
-    baseline_length = 0 ### your code here ###
+    baseline_length = 10 ### your code here ###
 
-    # over the baseline, determine the average signal value
-    baseline = 0 ### your code here ###
+    # over the baseline, determine the average signal value ### your code here ###
+    baseline_data = force_plate[0 : baseline_length] #Method found within example problem from class
+    baseline = sum(baseline_data) / len(baseline_data) #Method also found within example class problem
 
     # Step 2: After the baseline, find the first point that rises above that value
     # given some acceptable delta
@@ -60,14 +61,13 @@ def main(full_path_to_file):
         # if signal is rising
         if value > baseline + delta:
             # mark this index as the landing point
-
-            ### your code here ###
+            first_landing_index = index
 
             # break out of the loop to end iterating
             break
 
     # Step 3: When force measurements return to the initial baseline the user has left the plate.
-    # Consider this the take off point.
+    # Consider this the take-off point.
 
     # when the signal falls below the baseline plus delta, that is the take off point
     delta = 5
@@ -81,10 +81,16 @@ def main(full_path_to_file):
     # then may accidentally find a point that is "too early" in the data
 
     # walk through the list but start a few moments after the at the landing index
-    # since we know the take off point will be afterwards.
+    # since we know the take-off point will be afterward.
     for index in range(first_landing_index + 10, len(force_plate_list)):
+        value = force_plate_list[index]
 
-        ### your code here ###
+        #when the value goes back to zero or close to it as the user has left the plate
+        if value <= baseline + delta:
+            take_off_index = index
+            #break out of the loop to stop the iterations
+            break
+
         delete_me = 0
 
 
@@ -100,17 +106,23 @@ def main(full_path_to_file):
 
     # walk through the list but start a few moment after the takeoff point
     for index in range(take_off_index + 10, len(force_plate_list)):
+        value = force_plate_list[index]
 
-        ### your code here ###
+        # when the value goes back to NOT zero or close to it as the user has landed on the plate
+        if value > baseline + delta:
+            second_landing_index = index
+            # break out of the loop to stop the iterations
+            break
+
         delete_me = 0
 
     # Step 5: calculate the time of contact on plate and time of flight in air
 
     # calculate tc and convert to seconds using the sampling rate
-    time_of_contact = 0 ### your code here ###
+    time_of_contact = (take_off_index - first_landing_index) / sampling_rate
 
     # calculate tf and convert to seconds using the sampling rate
-    time_of_flight = 0 ### your code here ###
+    time_of_flight = (second_landing_index - take_off_index) / sampling_rate
 
     # Step 6: Calculate the Reactive Strength Index
 
@@ -118,7 +130,7 @@ def main(full_path_to_file):
     g = constants.g
 
     # RSI = (g*tf^2) / (8*tc)
-    RSI = 0 ### your code here ###
+    RSI = (g * time_of_flight ** 2) / (8 * time_of_contact)
 
     ### Do not modify below this line ###
 
