@@ -78,7 +78,6 @@ def calculate_stress(force, sample_diameter):
     stress = calculated_stress_MPa
 
     return stress
-#HEY DUMMY, YOU STOPPED RIGHT HEREEEEEEEEEEEEE
 
 
 if __name__ == "__main__":
