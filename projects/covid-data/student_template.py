@@ -65,8 +65,21 @@ def first_question(data):
     # When was the first positive COVID case in Harrisonburg?
     :return:
     """
+    #Thought process: I want to find the first time a value was recorded meaning greater than zero
+    #within the cases column specifically for rockingham county and harrisonburg
+    #from there, I want to read the date from that specific entry to determine the date which the first
+    #case(s) was determined
+
+    #Using an if statement to read through the data until it finds a value of cases greater than zero
+    #then keeping it if it is in rockingham county or harrisonburg
+    if covid in data:
+        
+
+
 
     # your code here
+    #print('The first positive COVID case in Rockingham County was in' , VALUE HERE)
+    #print('The first positive COVID case in Harrisonburg was in' , VALUE HERE)
     return
 
 def second_question(data):
