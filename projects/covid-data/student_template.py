@@ -73,7 +73,7 @@ def first_question(data):
     #Using an if statement to read through the data until it finds a value of cases greater than zero
     #then keeping it if it is in rockingham county or harrisonburg
     if covid in data:
-        
+
 
 
 
