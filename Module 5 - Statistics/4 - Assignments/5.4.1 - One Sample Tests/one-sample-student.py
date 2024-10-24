@@ -35,6 +35,18 @@ def one_sample_tests(_files: list, _mean: float, _alpha: float, _less_than: bool
     reject_null_hypothesis = []
 
     # YOUR CODE HERE #
+    #iterate through the list to look through each one of the files within the list of files
+    for beat in _files:
+        box = np.loadtxt(beat)
+        rap = np.asarray(box)
+        if _less_than: #if less than is true
+            (stat, p_value) = ttest_1samp(rap, popmean=_mean, alternative='less')
+        else: #BUT if it is not true, meaning false
+            (stat, p_value) = ttest_1samp(rap, popmean=_mean, alternative='greater')
+        if p_value < _alpha:
+            reject_null_hypothesis.append(beat)
+        #don't need an else here as there is nothing to go underneath it.
+
 
     # return samples that were rejected
     return reject_null_hypothesis
