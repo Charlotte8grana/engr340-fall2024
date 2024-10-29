@@ -20,6 +20,7 @@ Step #1: load data in matrix from CSV file; skip first two rows. Call the data s
 
 signal = 0
 ## YOUR CODE HERE ##
+np.loadtxt(signal, delimiter=',', skiprows=2)
 
 """
 Step 2: (OPTIONAL) pass data through LOW PASS FILTER (fs=250Hz, fc=15, N=6). These may not be correctly in radians
