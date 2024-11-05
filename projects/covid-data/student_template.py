@@ -103,13 +103,26 @@ def second_question(data):
 
     #Create an empty list that has the same number of columns as the data list
     slot = [0, 0, 0, 0, 0, 0]
+    prev_cases=0
+    date=''
     #Iterate through each line in the data set where first the line needs to have the city as
     #harrisonburg, then if that is true, then the line needs to compare it to each iteration
     #to find the greatest, or maximum, number of cases then print the date for that line.
+    for index in range(1,len(data)):
+        line = data[index]
+        if line[1] == 'Harrisonburg city':
+            change_in_cases = data[index]-data[index-1]
+
     for line in data:
         if line[1] == 'Harrisonburg city':
+            new_cases = line[4]
+            change_in_cases = new_cases - prev_cases
+            if change_in_cases > slot[4]:
+                slot[4] = change_in_cases
+                date=line[1]
             if line[4] > slot[4]:
                 slot = line
+            prev_cases=new_cases
     print('The day where the greatest number of COVID cases occurred in Harrisonburg was ' + slot[0])
 
     #Same here, make an empty list to hold the line
