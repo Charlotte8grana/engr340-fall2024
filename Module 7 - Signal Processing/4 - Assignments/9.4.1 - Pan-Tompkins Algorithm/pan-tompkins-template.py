@@ -1,5 +1,6 @@
 import numpy as np
 from ekg_testbench import EKGTestBench
+from scipy.signal import find_peaks
 
 def detect_heartbeats(filepath):
     """
@@ -16,13 +17,17 @@ def detect_heartbeats(filepath):
 
     # load data in matrix from CSV file; skip first two rows
     ## your code here
+    Matrix = np.loadtxt(path, delimiter=',', skiprows=2)
 
     # save each vector as own variable
     ## your code here
+    time = Matrix[:, 0]
+    MLII = Matrix[:, 1]
+    v1 = Matrix[:, 2]
 
     # identify one column to process. Call that column signal
 
-    signal = -1 ## your code here
+    signal = v1 ## your code here
 
     # pass data through LOW PASS FILTER (OPTIONAL)
     ## your code here
@@ -32,19 +37,25 @@ def detect_heartbeats(filepath):
 
     # pass data through differentiator
     ## your code here
+    diff = np.diff(v1)
 
     # pass data through square function
     ## your code here
+    square = np.square(diff)
 
     # pass through moving average window
     ## your code here
+    v = [1, 1, 1, 1, 1]
+    thing = np.convolve(square, v)
 
     # use find_peaks to identify peaks within averaged/filtered data
     # save the peaks result and return as part of testbench result
+    peaks, _ = find_peaks(signal, height=1, distance=50)
+
 
     ## your code here peaks,_ = find_peaks(....)
 
-    beats = None
+    beats = len(peaks)
 
     # do not modify this line
     return signal, beats
