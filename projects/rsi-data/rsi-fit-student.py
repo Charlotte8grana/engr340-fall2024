@@ -41,7 +41,9 @@ FP_Samples_numpy = df['force_plate_rsi'].to_numpy()
 normal_samples_FP = np.random.normal(loc=mu, scale=std, size=number_samples)
 #Calculating the mean and standard deviation of that distribution
 sample_mean_FP = np.mean(normal_samples_FP)
+print('The actual mean for the force plate data is ' + str(sample_mean_FP))
 sample_std_FP = np.std(normal_samples_FP)
+print('The actual standard deviation for the force plate data is ' + str(sample_std_FP))
 
 #Finding a probability distribution function
 space_x_FP = np.linspace(start=-3, stop=3, num=10000)
@@ -66,7 +68,9 @@ ACCEL_Samples_numpy = df['accelerometer_rsi'].to_numpy()
 normal_samples_ACCEL = np.random.normal(loc=mu, scale=std, size=number_samples)
 #Calculating the mean and standard deviation of that distribution
 sample_mean_ACCEL = np.mean(normal_samples_ACCEL)
+print('The actual mean for the acceleration data is ' + str(sample_mean_ACCEL))
 sample_std_ACCEL = np.std(normal_samples_ACCEL)
+print('The actual standard deviation for the acceleration data is ' + str(sample_std_ACCEL))
 
 #Finding a probability distribution function
 space_x_ACCEL = np.linspace(start=-3, stop=3, num=10000)
@@ -104,10 +108,7 @@ Acceleration
 bins = np.linspace(0, 2, 9)  # Create 10 bins
 
 #making the last bin go to infinity
-bins = np.r_[bins, np.inf]
-
-# putting the values in bins for the histogram
-counts, edges = np.histogram(ACCEL_Samples_numpy, bins=bins, density=False)
+bins = np.r_[-np.inf, bins, np.inf]
 
 #Find the expected probability using the code from lecture example
 expected_prob = np.diff(norm.cdf(bins, loc=mu, scale=std))
@@ -115,21 +116,48 @@ expected_prob = np.diff(norm.cdf(bins, loc=mu, scale=std))
 #Frequencey of each count (following lecture example)
 expected_counts = expected_prob * len(ACCEL_Samples_numpy)
 
+# putting the values in bins for the histogram
+counts, edges = np.histogram(ACCEL_Samples_numpy, bins=bins, density=False)
+
 # Conduct chi2 test
 # Reduce the degrees of freedom as the normal distribution has two parameters
-(chi_stat, p_value) = chisquare(f_obs=counts, f_exp=expected_counts, ddof=2)
-print('Chi2 stat: ', chi_stat, 'p-value: ', p_value)
+(chi_stat_ACCEL, p_value_ACCEL) = chisquare(f_obs=counts, f_exp=expected_counts, ddof=2)
+print('Chi2 stat for acceleration data: ', chi_stat_ACCEL, 'p-value for acceleration data: ', p_value_ACCEL)
 
-if p_value < alpha:
-    print('Reject null hypothesis. Counts are not equal.')
+if p_value_ACCEL < alpha:
+    print('Reject null hypothesis. ACCEL Counts are not equal.')
 else:
-    print('Accept null hypothesis. Counts are equal')
-
+    print('Accept null hypothesis. ACCEL Counts are equal')
 
 """
 Force Plate
 """
 ### YOUR CODE HERE
+
+#Creating 10 bins from 0 to 2
+bins = np.linspace(0, 2, 9)  # Create 10 bins
+
+#making the last bin go to infinity
+bins = np.r_[-np.inf, bins, np.inf]
+
+#Find the expected probability using the code from lecture example
+expected_prob = np.diff(norm.cdf(bins, loc=mu, scale=std))
+
+#Frequencey of each count (following lecture example)
+expected_counts = expected_prob * len(FP_Samples_numpy)
+
+# putting the values in bins for the histogram
+counts, edges = np.histogram(FP_Samples_numpy, bins=bins, density=False)
+
+# Conduct chi2 test
+# Reduce the degrees of freedom as the normal distribution has two parameters
+(chi_stat_FP, p_value_FP) = chisquare(f_obs=counts, f_exp=expected_counts, ddof=2)
+print('Chi2 stat for force plate data: ', chi_stat_FP, 'p-value for force plate data: ', p_value_FP)
+
+if p_value_FP < alpha:
+    print('Reject null hypothesis. FP Counts are not equal.')
+else:
+    print('Accept null hypothesis. FP Counts are equal')
 
 """
 Question 3: Perform a t-test to determine whether the RSI means for the acceleration and force plate data are equivalent 
@@ -138,6 +166,14 @@ or not. Clearly report the p-value for the t-test and make a clear determination
 print('\n\n-----Question 3-----')
 
 ### YOUR CODE HERE
+#Want to determine if the means of accel and fp are equivalent so this is a 2-sample t test
+
+(stat_2Sample_Test, p_value_2Sample_Test) = ttest_ind(normal_samples_FP, normal_samples_ACCEL, alternative='two-sided')
+print('The calculated p value from the 2 sample test is ' + str(p_value_2Sample_Test))
+if p_value_2Sample_Test < alpha:
+    print('Reject hypothesis, sample means are not equal')
+else:
+    print('Accept hypothesis, sample means are equivalent')
 
 """
 Question 4 (Bonus): Calculate the RSI Error for the dataset where error is expressed as the difference between the 
@@ -147,3 +183,13 @@ legends. The default binning approach from matplot lib with 16 bins is sufficien
 """
 
 ### YOUR CODE HERE
+#Calculating error between the force plate and acceleration data as per lecture slide examples
+error = FP_Samples_numpy - ACCEL_Samples_numpy
+plt.hist(error, bins=16, label='RSI ACCEL and FP Error')
+plt.xlabel('RSI Error')
+plt.ylabel('Counts')
+plt.title('RSI Error Distribution')
+
+#FIT THE ERROR TO A NORMAL DISTRIBUTION
+(fitted_mean, fitted_std) = norm.fit(error)
+plt.show()

@@ -37,7 +37,7 @@ def detect_heartbeats(filepath):
 
     # pass data through differentiator
     ## your code here
-    diff = np.diff(v1)
+    diff = np.diff(signal)
 
     # pass data through square function
     ## your code here
